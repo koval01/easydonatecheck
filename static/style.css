@@ -1,0 +1,17 @@
+.search-form {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.search-button {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
+.form-control:focus {
+    box-shadow: unset !important;
+}
+
+pre {
+    color: #1564da !important;
+}
