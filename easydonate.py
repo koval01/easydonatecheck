@@ -26,6 +26,8 @@ class GetPayment:
         if not resp:
             return []
         for r in resp["response"]:
-            if r[self.field] == self.data:
-                result.append(r)
+            if r[self.field]:
+                if self.data.lower() \
+                        in str(r[self.field]).lower():
+                    result.append(r)
         return result
