@@ -30,4 +30,5 @@ class GetPayment:
                 if self.data.lower() \
                         in str(r[self.field]).lower():
                     result.append(r)
+        result.reverse()
         return result
