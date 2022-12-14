@@ -118,13 +118,43 @@ const buttonSearchClick = () => {
             el.id = `code_${r.id}`;
             el.innerText = JSON.stringify(r, undefined, 4);
             const resultTemplate = `
-                <li id="id_${r.id}" class="list-group-item d-flex justify-content-between lh-sm">
+                <li id="id_${r.id}" class="list-group-item justify-content-between lh-sm">
+                    <span class="col">Никнейм: <pre>${r.customer}</pre></span>
+                    <span class="col">Почта: <pre>${r.email ? r.email : "Нет"}</pre></span>
+                    <div class="row">
+                        <span class="col">Номер чека: <pre>${r.id}</pre></span>
+                        <span class="col">Cтатус: <pre>${r.status ? "Оплачен" : "Не оплачен"}</pre></span>
+                        <span class="col">Сумма: <pre>${r.enrolled}</pre></span>
+                        <span class="col">Ошибка: <pre>${r.error ? "Да" : "Нет"}</pre></span>
+                        
+                        <span class="col">Создан: <pre>${r.created_at}</pre></span>
+                        <span class="col">Обновлен: <pre>${r.updated_at}</pre></span>
+                    </div>
+                    <button type="button" class="btn btn-primary" style="position: absolute;right: 1em;z-index: 1" opened="false" onclick="displayJsonRaw(${r.id})" id="showJsonButton_${r.id}">Показать JSON</button>
+                    <div id="originalJson_${r.id}" style="height: 2.4em;opacity: 0;transition: all .6s;overflow: auto"></div>
                 </li>
             `;
             results.innerHTML = results.innerHTML + resultTemplate;
-            document.getElementById(`id_${r.id}`).append(el);
+            document.getElementById(`originalJson_${r.id}`).append(el);
         }
     }, input.value, selectField(input.value)["system"])
+}
+
+const displayJsonRaw = (id) => {
+    const button = document.getElementById(`showJsonButton_${id}`);
+    const field = document.getElementById(`originalJson_${id}`);
+
+    if (button.getAttribute("opened") === "true") {
+        button.setAttribute("opened", "false");
+        button.innerText = "Показать JSON";
+        field.style.height = "2.4em";
+        field.style.opacity = "0";
+    } else {
+        button.setAttribute("opened", "true");
+        button.innerText = "Скрыть JSON";
+        field.style.height = "40vh";
+        field.style.opacity = "1";
+    }
 }
 
 const updateType = () => {
