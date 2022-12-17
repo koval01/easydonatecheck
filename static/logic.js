@@ -130,8 +130,8 @@ const buttonSearchClick = () => {
                         <span class="col">Создан: <pre>${r.created_at}</pre></span>
                         <span class="col">Обновлен: <pre>${r.updated_at}</pre></span>
                     </div>
-                    <button type="button" class="btn btn-primary" style="position: absolute;right: 1em;z-index: 1" opened="false" onclick="displayJsonRaw(${r.id})" id="showJsonButton_${r.id}">Показать JSON</button>
-                    <div id="originalJson_${r.id}" style="height: 2.4em;opacity: 0;transition: all .6s;overflow: auto"></div>
+                    <button type="button" class="btn btn-primary" style="position: absolute;right: 1em;z-index: 1;border-radius:.6em" opened="false" onclick="displayJsonRaw(${r.id})" id="showJsonButton_${r.id}">Показать JSON</button>
+                    <div id="originalJson_${r.id}" style="height: 2.4em;opacity: 0;transition: all .6s;overflow: auto;box-shadow: rgb(0 0 0 / 60%) 0 0 1em;padding: 1em;border-radius: 0.6em;"></div>
                 </li>
             `;
             results.innerHTML = results.innerHTML + resultTemplate;
