@@ -1,10 +1,11 @@
 from requests import get as http_get
+from methods import Methods
 from os import getenv
 
 
 class GetPayment:
 
-    def __init__(self, field: str, data: str) -> None:
+    def __init__(self, field: str = None, data: str = None) -> None:
         self.field = field
         self.data = data
 
@@ -32,3 +33,20 @@ class GetPayment:
                     result.append(r)
         result.reverse()
         return result
+
+    @property
+    def sum_enrolled(self) -> dict:
+        resp = self._response()
+        array = [r for r in resp["response"] if r["status"] == 2]
+        return {
+            "sum": {
+                "clear": Methods.truncate(sum([
+                    r["enrolled"] for r in array]), 2),
+                "all": Methods.truncate(sum([
+                    r["cost"] for r in array]), 2)
+            },
+            "len": {
+                "clear": len(array),
+                "all": len(resp["response"])
+            }
+        }

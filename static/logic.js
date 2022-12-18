@@ -70,6 +70,28 @@ const getDataSearch = (callback, data, field) => {
     });
 }
 
+const getSum = (callback) => {
+    requestCall((r) => {
+        callback(JSON.parse(r));
+    }, "/api/sum", "GET");
+}
+
+const updateStatistics = () => {
+    getSum(function (data) {
+        const selector = document.getElementById("statistics_block");
+        selector.innerHTML = `
+            <p class="text-muted">
+                За все время было создано
+                <span class="text-primary">${data.len.all}</span>
+                чеков, из них оплачено
+                <span class="text-primary">${data.len.clear}</span>.
+                Сумма всех покупок <span class="text-primary">${data.sum.all}</span>₽ 
+                из которой чистый доход <span class="text-primary">${data.sum.clear}</span>₽
+            </p>
+        `;
+    })
+}
+
 const selectField = (data) => {
     if (!data) {
         return {system: null, display: "нет"};
@@ -124,7 +146,8 @@ const buttonSearchClick = () => {
                     <div class="row">
                         <span class="col">Номер чека: <pre>${r.id}</pre></span>
                         <span class="col">Cтатус: <pre>${r.status ? "Оплачен" : "Не оплачен"}</pre></span>
-                        <span class="col">Сумма: <pre>${r.enrolled}</pre></span>
+                        <span class="col">Сумма: <pre>${r.cost}</pre></span>
+                        <span class="col">Доход: <pre>${r.enrolled}</pre></span>
                         <span class="col">Ошибка: <pre>${r.error ? "Да" : "Нет"}</pre></span>
                         
                         <span class="col">Создан: <pre>${r.created_at}</pre></span>
@@ -168,4 +191,7 @@ window.onload = () => {
     (_) => {
         updateType();
     });
+
+    updateStatistics();
+    setInterval(updateStatistics, 5000);
 }

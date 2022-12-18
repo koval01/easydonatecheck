@@ -15,5 +15,10 @@ def search():
     return GetPayment(body["field"], body["data"]).results
 
 
+@app.route('/api/sum', methods=['GET'])
+def sum_enrolled():
+    return GetPayment().sum_enrolled
+
+
 if __name__ == '__main__':
-    app.run()
+    app.run(port=9914)
