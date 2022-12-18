@@ -140,7 +140,7 @@ const buttonSearchClick = () => {
             el.id = `code_${r.id}`;
             el.innerText = JSON.stringify(r, undefined, 4);
             const resultTemplate = `
-                <li id="id_${r.id}" class="list-group-item justify-content-between lh-sm">
+                <li id="id_${r.id}" payed="${r.status ? "True" : "False"}" class="list-group-item justify-content-between lh-sm">
                     <span class="col">Никнейм: <pre>${r.customer}</pre></span>
                     <span class="col">Почта: <pre>${r.email ? r.email : "Нет"}</pre></span>
                     <div class="row">

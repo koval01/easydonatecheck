@@ -30,6 +30,7 @@ class GetPayment:
             if r[self.field]:
                 if self.data.lower() \
                         in str(r[self.field]).lower():
+                    r["enrolled"] = 0 if r["status"] != 2 else r["enrolled"]
                     result.append(r)
         result.reverse()
         return result
