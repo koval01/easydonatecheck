@@ -77,17 +77,19 @@ const getSum = (callback) => {
 }
 
 const updateStatistics = () => {
+    const hover = document.getElementById("stat_hover");
+    hover.style.opacity = "1";
+
     getSum(function (data) {
-        const selector = document.getElementById("statistics_block");
+        const selector = document.getElementById("donateStat");
+        hover.style.opacity = "0";
         selector.innerHTML = `
-            <p class="text-muted">
-                За все время было создано
-                <span class="text-primary">${data.len.all}</span>
-                чеков, из них оплачено
-                <span class="text-primary">${data.len.clear}</span>.
-                Сумма всех покупок <span class="text-primary">${data.sum.all}</span>₽ 
-                из которой чистый доход <span class="text-primary">${data.sum.clear}</span>₽
-            </p>
+            <span class="col">Всего: <pre>${data.len.all}</pre></span>
+            <span class="col">Оплачено: <pre>${data.len.clear}</pre></span>
+            <span class="col">Сумма: <pre>${data.sum.all}</pre></span>
+            <span class="col">Доход: <pre>${data.sum.clear}</pre></span>
+            <span class="col">Средний: <pre>${data.average}</pre></span>
+            <span class="col">Последний: <pre>${data.last_enrolled}</pre></span>
         `;
     })
 }
@@ -104,6 +106,25 @@ const selectField = (data) => {
         return {system: "email", display: "почта", data: data};
     }
     return {system: "customer", display: "никнейм", data: data};
+}
+
+const getRandomInt = (min, max) => {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+
+  return Math.floor(Math.random() * (max - min) + min);
+}
+
+const string_generator = (length=0) => {
+    let result = "";
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let charactersLength = characters.length;
+    length = length ? length : getRandomInt(4, 9);
+
+    for (let i = 0; i < length; i++) {
+        result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return result;
 }
 
 const buttonSearchClick = () => {
@@ -123,7 +144,7 @@ const buttonSearchClick = () => {
 
     type.innerText = "поиск...";
     counter.innerText = "0";
-    results.innerHTML = "";
+    results.innerHTML = '';
 
     getDataSearch(function (response) {
         button.removeAttribute("disabled");

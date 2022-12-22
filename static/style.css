@@ -1,3 +1,23 @@
+@import url('https://fonts.googleapis.com/css2?family=Flow+Circular&display=swap');
+
+.preload-text {
+    font-family: 'Flow Circular', cursive !important;
+    color: #777777;
+}
+
+.stat_hover {
+    background: rgb(80 80 80 / 35%);
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    z-index: 10;
+    left: 0;
+    top: 0;
+    border-radius: 0.3em;
+    transition: all .4s;
+    opacity: 0;
+}
+
 .search-form {
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;

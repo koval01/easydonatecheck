@@ -1,15 +1,17 @@
-from requests import get as http_get
-from methods import Methods
 from os import getenv
+
+from requests import get as http_get
+
+from methods import Methods
 
 
 class GetPayment:
 
-    def __init__(self, field: str = None, data: str = None) -> None:
+    def __init__(self, method: str = "payments", field: str = None, data: str = None) -> None:
         self.field = field
         self.data = data
 
-        self.url = "https://easydonate.ru/api/v3/shop/payments"
+        self.url = f"https://easydonate.ru/api/v3/shop/{method}"
         self.headers = {
             "Shop-Key": getenv("SHOP_KEY")
         }
@@ -36,9 +38,34 @@ class GetPayment:
         return result
 
     @property
+    def raw(self) -> list or dict:
+        return self._response()
+
+    @property
+    def coupons(self) -> list:
+        resp = self._response()
+        if not resp:
+            return []
+
+        return [{
+            "code": c["code"],
+            "created_at": c["created_at"],
+            "expires_at": c["expires_at"],
+            "limit": c["limit"],
+            "sale": c["sale"],
+            "products": [{
+                    "name": p["name"],
+                    "price": p["price"]
+                } for p in resp["response"]["products"]
+            ]
+        } for c in resp["response"]]
+
+    @property
     def sum_enrolled(self) -> dict:
         resp = self._response()
         array = [r for r in resp["response"] if r["status"] == 2]
+        enrolled_list = [e["enrolled"] for e in array]
+
         return {
             "sum": {
                 "clear": Methods.truncate(sum([
@@ -46,6 +73,8 @@ class GetPayment:
                 "all": Methods.truncate(sum([
                     r["cost"] for r in array]), 2)
             },
+            "average": Methods.truncate(sum(enrolled_list) / len(array), 2),
+            "last_enrolled": Methods.truncate(array[-1:][0]["enrolled"], 2),
             "len": {
                 "clear": len(array),
                 "all": len(resp["response"])

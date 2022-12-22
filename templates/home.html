@@ -17,14 +17,19 @@
 <div class="container">
     <main>
         <div class="statistics_block mt-4 text-center" id="statistics_block">
-            <p class="text-muted">
-                За все время было создано
-                <span class="text-primary">-</span>
-                чеков, из них оплачено
-                <span class="text-primary">-</span>.
-                Сумма всех покупок <span class="text-primary">-</span>
-                из которой чистый доход <span class="text-primary">-</span>.
-            </p>
+            <ul class="list-group mb-3" id="statList">
+                <li class="list-group-item justify-content-between lh-sm">
+                    <div class="stat_hover" id="stat_hover"></div>
+                    <div class="row" id="donateStat">
+                        <span class="col">Всего: <pre>-</pre></span>
+                        <span class="col">Оплачено: <pre>-</pre></span>
+                        <span class="col">Сумма: <pre>-</pre></span>
+                        <span class="col">Доход: <pre>-</pre></span>
+                        <span class="col">Средний: <pre>-</pre></span>
+                        <span class="col">Последний: <pre>-</pre></span>
+                    </div>
+                </li>
+            </ul>
         </div>
         <div class="col-xl-6 col-lg-7 col-md-8 col-lg-4" style="margin: auto">
             <div class="py-5 text-center">
