@@ -26,7 +26,7 @@ def home_view():
 @app.route('/api/search', methods=['POST'])
 def search():
     body = request.json
-    return GetPayment(body["field"], body["data"]).results
+    return GetPayment(field=body["field"], data=body["data"]).results
 
 
 @app.route('/api/sum', methods=['GET'])
