@@ -64,13 +64,18 @@ class GetPayment:
 
     def sum_enrolled(self, interval: int) -> dict:
         resp = self._response()
-        array = [r for r in resp["response"] if r["status"] == 2]
-        enrolled_list = [e["enrolled"] for e in array]
 
         date_now = datetime.now()
-        array = [e for e in array if (
-                date_now - datetime.strptime(e["created_at"], "%Y-%m-%d %H:%M:%S")
-        ).days <= interval or interval < 0]
+        filter_date = lambda d, e: True \
+            if (date_now - datetime.strptime(e["created_at"], "%Y-%m-%d %H:%M:%S")) \
+                   .days <= d or d < 0 \
+            else False
+
+        resp["response"] = [e for e in resp["response"] if filter_date(interval, e)]
+
+        array = [r for r in resp["response"] if r["status"] == 2]
+        enrolled_list = [e["enrolled"] for e in array]
+        array = [e for e in array if filter_date(interval, e)]
 
         return {
             "sum": {
