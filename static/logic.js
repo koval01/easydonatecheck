@@ -1,6 +1,9 @@
 const input = document.getElementById("searchField");
 const type = document.getElementById("searchFieldType");
 
+var current_dset = -1;
+var updateStatisticsLock = false;
+
 const requestCall = (callback, url, method, json = false, json_body = null) => {
     let request = new XMLHttpRequest();
     let json_body_local = {};
@@ -72,11 +75,19 @@ const getDataSearch = (callback, data, field) => {
 
 const getSum = (callback) => {
     requestCall((r) => {
-        callback(JSON.parse(r));
-    }, "/api/sum", "GET");
+        callback(r);
+    }, "/api/sum", "POST", true, {
+        interval: current_dset
+    });
 }
 
-const updateStatistics = () => {
+const updateStatistics = (lock=false) => {
+    if (updateStatisticsLock) {
+        return;
+    }
+    if (lock) {
+        updateStatisticsLock = true;
+    }
     const hover = document.getElementById("stat_hover");
     hover.style.opacity = "1";
 
@@ -91,6 +102,7 @@ const updateStatistics = () => {
             <span class="col">Средний: <pre>${data.average}</pre></span>
             <span class="col">Последний: <pre>${data.last_enrolled}</pre></span>
         `;
+        updateStatisticsLock = false;
     })
 }
 
@@ -106,6 +118,18 @@ const selectField = (data) => {
         return {system: "email", display: "почта", data: data};
     }
     return {system: "customer", display: "никнейм", data: data};
+}
+
+const initRadioSwitch = () => {
+    document.getElementById("intervalStatSwitch")
+        .addEventListener(
+            'click', function (event
+            ) {
+        if (event.target && event.target.matches("input[type='radio']")) {
+            current_dset = parseInt(event.target.id.slice(0, -1));
+            updateStatistics(true);
+        }
+    });
 }
 
 const getRandomInt = (min, max) => {
@@ -215,4 +239,6 @@ window.onload = () => {
 
     updateStatistics();
     setInterval(updateStatistics, 5000);
+
+    initRadioSwitch();
 }

@@ -29,9 +29,9 @@ def search():
     return GetPayment(field=body["field"], data=body["data"]).results
 
 
-@app.route('/api/sum', methods=['GET'])
+@app.route('/api/sum', methods=['POST'])
 def sum_enrolled():
-    return GetPayment().sum_enrolled
+    return GetPayment().sum_enrolled(request.json["interval"])
 
 
 @app.route('/api/coupons', methods=['GET'])
