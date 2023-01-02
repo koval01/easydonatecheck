@@ -1,10 +1,13 @@
 from os import getenv
 
-from requests import get as http_get
+import requests_cache
+from requests_cache import RedisCache
 
 from methods import Methods
 
-from datetime import datetime
+from datetime import datetime, timedelta
+
+from os import getenv
 
 
 class GetPayment:
@@ -13,13 +16,20 @@ class GetPayment:
         self.field = field
         self.data = data
 
+        self.cache_storage = RedisCache(host='127.0.0.1', port=6379)
+        self.session = requests_cache.CachedSession(
+            'easydonate_cache', allowable_codes=[200],
+            expire_after=timedelta(seconds=90), backend=self.cache_storage
+            if getenv("FLASK_ENV") != "development" else "memory"
+        )
+
         self.url = f"https://easydonate.ru/api/v3/shop/{method}"
         self.headers = {
             "Shop-Key": getenv("SHOP_KEY")
         }
 
     def _response(self) -> dict or None:
-        resp = http_get(self.url, headers=self.headers)
+        resp = self.session.get(self.url, headers=self.headers)
         return resp.json() \
             if resp.status_code >= 200 < 400 and len(resp.text) \
             else None
