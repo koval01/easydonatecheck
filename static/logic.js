@@ -99,6 +99,7 @@ const updateStatistics = (lock=false) => {
             <span class="col">Оплачено: <pre>${data.len.clear}</pre></span>
             <span class="col">Сумма: <pre>${data.sum.all}</pre></span>
             <span class="col">Доход: <pre>${data.sum.clear}</pre></span>
+            <span class="col">Доход (EUR): <pre>${data.sum.profit_eur}</pre></span>
             <span class="col">Средний: <pre>${data.average}</pre></span>
             <span class="col">Последний: <pre>${data.last_enrolled}</pre></span>
         `;

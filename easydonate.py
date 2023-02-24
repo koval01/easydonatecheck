@@ -9,6 +9,8 @@ from datetime import datetime, timedelta
 
 from os import getenv
 
+from currency import Currency
+
 
 class GetPayment:
 
@@ -87,10 +89,11 @@ class GetPayment:
         enrolled_list = [e["enrolled"] for e in array]
         array = [e for e in array if filter_date(interval, e)]
 
+        clear_profit = sum([r["enrolled"] for r in array])
         return {
             "sum": {
-                "clear": Methods.truncate(sum([
-                    r["enrolled"] for r in array]), 2),
+                "profit_eur": Methods.truncate(Currency(clear_profit).get, 2),
+                "clear": Methods.truncate(clear_profit, 2),
                 "all": Methods.truncate(sum([
                     r["cost"] for r in array]), 2)
             },
